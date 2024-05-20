@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pagar',
@@ -15,28 +14,44 @@ export class PagarPage {
   city: string = '';
   postalCode: string = '';
 
-  constructor(
-    private router: Router,
-    private alertController: AlertController,
-    private navCtrl: NavController
-  ) {}
+  firstNameError: boolean = false;
+  lastNameError: boolean = false;
+  addressLine1Error: boolean = false;
+  cityError: boolean = false;
+  postalCodeError: boolean = false;
 
-  async submitProposal() {
-    if (
-      this.firstName &&
-      this.lastName &&
-      this.addressLine1 &&
-      this.city &&
-      this.postalCode
-    ) {
-      this.router.navigate(['/pedido']);
-    } else {
-      const alert = await this.alertController.create({
-        header: 'Erro',
-        message: 'Por favor, preencha todos os campos obrigatórios.',
-        buttons: ['OK'],
-      });
-      await alert.present();
+  constructor(private router: Router) {}
+
+  submitProposal() {
+    this.resetErrors();
+
+    if (!this.firstName) {
+      this.firstNameError = true;
     }
+    if (!this.lastName) {
+      this.lastNameError = true;
+    }
+    if (!this.addressLine1) {
+      this.addressLine1Error = true;
+    }
+    if (!this.city) {
+      this.cityError = true;
+    }
+    if (!this.postalCode) {
+      this.postalCodeError = true;
+    }
+
+    if (!this.firstNameError && !this.lastNameError && !this.addressLine1Error && !this.cityError && !this.postalCodeError) {
+      const listId = history.state.listId; // Retrieve the listId from history state
+      this.router.navigate(['/pedido'], { state: { listId } });
+    }
+  }
+
+  resetErrors() {
+    this.firstNameError = false;
+    this.lastNameError = false;
+    this.addressLine1Error = false;
+    this.cityError = false;
+    this.postalCodeError = false;
   }
 }

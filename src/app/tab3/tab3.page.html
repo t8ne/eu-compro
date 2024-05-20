@@ -1,17 +1,121 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+  <ion-toolbar style="--border-width: 0">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/settings">
+        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="search-container">
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionInput)="filterItems($event)"
+      placeholder="Pesquisar por produtos"
+      (ionClear)="clearSearch()"
+    ></ion-searchbar>
+  </div>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <div *ngIf="recentSearches.length > 0" class="recent-searches">
+    <h2>Pesquisado recentemente</h2>
+    <ion-list>
+      <ion-item *ngFor="let search of recentSearches">
+        <ion-label>{{ search }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="searchResults.length > 0" class="search-results">
+    <ion-list>
+      <ion-item
+        *ngFor="let result of searchResults"
+        (click)="selectItem(result)"
+      >
+        <ion-label>{{ result.name }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="showGrid" class="product-grid">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" *ngFor="let product of filteredProducts">
+          <ion-card (click)="showProductDetails(product)">
+            <img [src]="product.image" alt="{{ product.name }}" />
+            <ion-card-header>
+              <ion-card-title>{{ product.name }}</ion-card-title>
+              <ion-card-subtitle>{{ product.preco }}</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <div class="modal-wrapper">
+      <h3>Adicionar Produto?</h3>
+      <img
+        [src]="selectedProduct?.image"
+        alt="{{ selectedProduct?.name }}"
+        class="product-image"
+      />
+      <h4>
+        {{ selectedProduct?.name }} <span>({{ selectedProduct?.preco }})</span>
+      </h4>
+      <p>Supermercado: {{ selectedProduct?.supermercado }}</p>
+      <p>Quantidade: x{{ selectedProduct?.quantity }}</p>
+      <ion-select [(ngModel)]="selectedList">
+        <ion-select-option *ngFor="let list of lists" [value]="list?.id"
+          >{{ list?.name }}</ion-select-option
+        >
+      </ion-select>
+      <div class="modal-buttons">
+        <ion-button color="success" (click)="addProductToList()">✔</ion-button>
+        <ion-button color="danger" (click)="closeModal()">✖</ion-button>
+      </div>
+    </div>
+  </ion-modal>
 </ion-content>
+
+<style>
+  .search-container {
+    padding: 16px;
+  }
+
+  .recent-searches {
+    padding: 16px;
+  }
+
+  .search-results {
+    padding: 16px;
+  }
+
+  .product-grid {
+    padding: 16px;
+  }
+
+  .modal-wrapper {
+    padding: 16px;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .modal-wrapper h3 {
+    margin-top: 0;
+  }
+
+  .modal-wrapper img.product-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 16px;
+  }
+</style>

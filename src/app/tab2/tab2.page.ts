@@ -33,17 +33,17 @@ export class Tab2Page implements OnInit {
 
   async presentPrompt() {
     const alert = await this.alertController.create({
-      header: 'New List',
+      header: 'Nova Lista',
       inputs: [
         {
           name: 'name',
           type: 'text',
-          placeholder: 'List Name'
+          placeholder: 'Nome da Lista'
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {

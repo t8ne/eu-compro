@@ -72,7 +72,7 @@ const routes: Routes = [
   },
   {
     path: 'pedido',
-    loadChildren: () => import('./pedido/pedido.module').then( m => m.PedidoPageModule)
+    loadChildren: () => import('./pedido/pedido.module').then(m => m.PedidoPageModule)
   }
 ];
 

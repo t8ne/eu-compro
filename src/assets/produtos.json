@@ -1,0 +1,206 @@
+[
+  {
+    "name": "Leite",
+    "preco": "0.79€",
+    "supermercado": "Continente",
+    "image": "https://images.unsplash.com/photo-1576201835302-08c1a4d4b3f2"
+  },
+  {
+    "name": "Pão",
+    "preco": "1.00€",
+    "supermercado": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce"
+  },
+  {
+    "name": "Ovos",
+    "preco": "1.99€",
+    "supermercado": "LIDL",
+    "image": "https://images.unsplash.com/photo-1577985056649-17463a9c027f"
+  },
+  {
+    "name": "Arroz",
+    "preco": "1.20€",
+    "supermercado": "Aldi",
+    "image": "https://images.unsplash.com/photo-1598511726999-1e63d8a7643c"
+  },
+  {
+    "name": "Massa",
+    "preco": "0.89€",
+    "supermercado": "Auchan",
+    "image": "https://images.unsplash.com/photo-1612197529515-3d7c1dfe8b2a"
+  },
+  {
+    "name": "Frango",
+    "preco": "4.50€",
+    "supermercado": "Jumbo",
+    "image": "https://images.unsplash.com/photo-1589923188900-63266e3ed4ca"
+  },
+  {
+    "name": "Peixe",
+    "preco": "6.00€",
+    "supermercado": "Continente",
+    "image": "https://images.unsplash.com/photo-1598514982903-d0d9e1a5fe3c"
+  },
+  {
+    "name": "Carne de Vaca",
+    "preco": "7.00€",
+    "supermercado": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1555243896-cb2afea5e3d7"
+  },
+  {
+    "name": "Cerveja",
+    "preco": "1.50€",
+    "supermercado": "LIDL",
+    "image": "https://images.unsplash.com/photo-1542396601-fd7badd3ecb9"
+  },
+  {
+    "name": "Água",
+    "preco": "0.50€",
+    "supermercado": "Aldi",
+    "image": "https://images.unsplash.com/photo-1569229182884-5073b5a5a791"
+  },
+  {
+    "name": "Sumo",
+    "preco": "1.20€",
+    "supermercado": "Auchan",
+    "image": "https://images.unsplash.com/photo-1578503185835-7bd6e21e6670"
+  },
+  {
+    "name": "Batatas",
+    "preco": "2.00€",
+    "supermercado": "Jumbo",
+    "image": "https://images.unsplash.com/photo-1573729254704-0f27c08f4a07"
+  },
+  {
+    "name": "Cebolas",
+    "preco": "1.50€",
+    "supermercado": "Continente",
+    "image": "https://images.unsplash.com/photo-1589923056516-5ca9780dfd63"
+  },
+  {
+    "name": "Tomates",
+    "preco": "1.80€",
+    "supermercado": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1576186726113-35ee7022d93e"
+  },
+  {
+    "name": "Alface",
+    "preco": "0.99€",
+    "supermercado": "LIDL",
+    "image": "https://images.unsplash.com/photo-1514361892635-6f1463c6b8c5"
+  },
+  {
+    "name": "Pepino",
+    "preco": "0.80€",
+    "supermercado": "Aldi",
+    "image": "https://images.unsplash.com/photo-1560639514-3945f6b9c3e1"
+  },
+  {
+    "name": "Maçã",
+    "preco": "1.99€",
+    "supermercado": "Auchan",
+    "image": "https://images.unsplash.com/photo-1571049003485-d98c3020b442"
+  },
+  {
+    "name": "Banana",
+    "preco": "1.50€",
+    "supermercado": "Jumbo",
+    "image": "https://images.unsplash.com/photo-1587502536263-22034ce1d6f0"
+  },
+  {
+    "name": "Iogurte",
+    "preco": "2.50€",
+    "supermercado": "Continente",
+    "image": "https://images.unsplash.com/photo-1564838967549-32c2c00584e2"
+  },
+  {
+    "name": "Queijo",
+    "preco": "3.00€",
+    "supermercado": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1576402187871-dfdb23ddc0b2"
+  },
+  {
+    "name": "Fiambre",
+    "preco": "2.80€",
+    "supermercado": "LIDL",
+    "image": "https://images.unsplash.com/photo-1606744837172-eac9b3b4e0b7"
+  },
+  {
+    "name": "Presunto",
+    "preco": "4.00€",
+    "supermercado": "Aldi",
+    "image": "https://images.unsplash.com/photo-1606756791122-c231c53c82e0"
+  },
+  {
+    "name": "Azeite",
+    "preco": "3.50€",
+    "supermercado": "Auchan",
+    "image": "https://images.unsplash.com/photo-1599423300746-b62533397364"
+  },
+  {
+    "name": "Óleo",
+    "preco": "1.50€",
+    "supermercado": "Jumbo",
+    "image": "https://images.unsplash.com/photo-1518969735600-5d7bcb5257f6"
+  },
+  {
+    "name": "Manteiga",
+    "preco": "2.00€",
+    "supermercado": "Continente",
+    "image": "https://images.unsplash.com/photo-1597847722419-5bd4cdb6b9e6"
+  },
+  {
+    "name": "Farinha",
+    "preco": "0.90€",
+    "supermercado": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1612329775482-b3cbcf4c2390"
+  },
+  {
+    "name": "Açúcar",
+    "preco": "1.00€",
+    "supermercado": "LIDL",
+    "image": "https://images.unsplash.com/photo-1598511726722-e3c9c8df4224"
+  },
+  {
+    "name": "Sal",
+    "preco": "0.50€",
+    "supermercado": "Aldi",
+    "image": "https://images.unsplash.com/photo-1555992336-03a23c106778"
+  },
+  {
+    "name": "Pimenta",
+    "preco": "1.20€",
+    "supermercado": "Auchan",
+    "image": "https://images.unsplash.com/photo-1598516903124-485d654a8ea1"
+  },
+  {
+    "name": "Café",
+    "preco": "3.00€",
+    "supermercado": "Jumbo",
+    "image": "https://images.unsplash.com/photo-1511925471885-8423c2c7b129"
+  },
+  {
+    "name": "Chá",
+    "preco": "1.50€",
+    "supermercado": "Continente",
+    "image": "https://images.unsplash.com/photo-1518972559570-0a157d80a93c"
+  },
+  {
+    "name": "Biscoitos",
+    "preco": "2.00€",
+    "supermercado": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1605185782885-f28c5c7b57ea"
+  },
+  {
+    "name": "Bolachas",
+    "preco": "1.50€",
+    "supermercado": "LIDL",
+    "image": "https://images.unsplash.com/photo-1609059464065-d577a7b7fa0c"
+  },
+  {
+    "name": "Chocolate",
+    "preco": "1.20€",
+    "supermercado": "Aldi",
+    "image": "https://images.unsplash.com/photo-1588389941879-818ed8e0bff8"
+  }
+]
