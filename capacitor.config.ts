@@ -12,6 +12,9 @@ const config: CapacitorConfig = {
     StatusBar: {
       style: 'DARK',
     },
+    ScreenOrientation: {
+      orientation: 'portrait'
+    },
   },
 };
 
