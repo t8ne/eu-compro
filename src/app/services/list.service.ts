@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 interface Item {
   name: string;
+  preco: number;
   quantity: number;
 }
 
@@ -15,8 +16,7 @@ interface List {
   providedIn: 'root'
 })
 export class ListService {
-  private lists: List[] = [
-  ];
+  private lists: List[] = [];
 
   constructor() {}
 
@@ -34,32 +34,25 @@ export class ListService {
     return newList;
   }
 
-  addItemToList(listId: string, item: Item): void {
-    const list = this.getListById(listId);
-    if (list) {
-      list.items.push(item);
-    }
-  }
-
-  removeItemFromList(listId: string, item: Item): void {
-    const list = this.getListById(listId);
-    if (list) {
-      list.items = list.items.filter(i => i !== item);
-    }
-  }
-
-  deleteList(id: string): void {
-    this.lists = this.lists.filter(list => list.id !== id);
-  }
-
-  renameList(id: string, newName: string): void {
+  renameList(id: string, newName: string) {
     const list = this.getListById(id);
     if (list) {
       list.name = newName;
     }
   }
 
-  updateLists(updatedLists: List[]): void {
-    this.lists = updatedLists;
+  addItemToList(listId: string, item: Item) {
+    const list = this.getListById(listId);
+    if (list) {
+      list.items.push(item);
+    }
+  }
+
+  updateLists(lists: List[]) {
+    this.lists = lists;
+  }
+
+  deleteList(id: string) {
+    this.lists = this.lists.filter(list => list.id !== id);
   }
 }

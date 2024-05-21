@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ListService } from '../services/list.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-lista',
@@ -9,20 +10,34 @@ import { ListService } from '../services/list.service';
 })
 export class ListaPage implements OnInit {
   currentList: any;
+  listId: string = '';
 
   constructor(
     private route: ActivatedRoute,
-    private listService: ListService
+    private router: Router,
+    private listService: ListService,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
     const listId = this.route.snapshot.paramMap.get('id');
     if (listId) {
-      this.currentList = this.listService.getListById(listId);
+      this.listId = listId;
+      this.currentList = this.listService.getListById(this.listId);
     }
   }
 
-  openCamera() {
-    // Implement QR Code scanning functionality
+  calculateSubtotal(list: any): number {
+    return list.items.reduce((total: number, item: any) => total + item.preco * item.quantity, 0);
+  }
+
+  goToPagar() {
+    this.router.navigate(['/pagar'], {
+      state: { subtotal: this.calculateSubtotal(this.currentList), listId: this.listId, name: this.currentList.name },
+    });
+  }
+
+  async openCamera() {
+    // Implementação da funcionalidade da câmara
   }
 }

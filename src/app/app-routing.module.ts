@@ -47,10 +47,6 @@ const routes: Routes = [
     loadChildren: () => import('./notificacoes/notificacoes.module').then(m => m.NotificacoesPageModule)
   },
   {
-    path: 'permissoes',
-    loadChildren: () => import('./permissoes/permissoes.module').then(m => m.PermissoesPageModule)
-  },
-  {
     path: 'linguagem',
     loadChildren: () => import('./linguagem/linguagem.module').then(m => m.LinguagemPageModule)
   },

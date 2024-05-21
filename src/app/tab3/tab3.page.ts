@@ -86,6 +86,7 @@ export class Tab3Page {
     if (this.selectedList && this.selectedProduct) {
       this.listService.addItemToList(this.selectedList, {
         name: this.selectedProduct.name,
+        preco: this.selectedProduct.preco, // Adiciona o preço do produto
         quantity: 1, // Adiciona quantidade padrão
       });
       this.isModalOpen = false;

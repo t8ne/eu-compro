@@ -10,6 +10,8 @@ import { AlertController, ActionSheetController, ToastController } from '@ionic/
 })
 export class Tab2Page implements OnInit {
   lists: any[] = [];
+  filteredLists: any[] = [];
+  searchQuery: string = '';
 
   constructor(
     private router: Router,
@@ -25,6 +27,7 @@ export class Tab2Page implements OnInit {
 
   loadLists() {
     this.lists = this.listService.getLists();
+    this.filteredLists = this.lists;
   }
 
   openList(listId: string) {
@@ -55,8 +58,9 @@ export class Tab2Page implements OnInit {
             if (data.name) {
               this.listService.createList(data.name);
               this.loadLists();
+              this.filterLists();
             } else {
-              this.showToast('List name cannot be empty');
+              this.showToast('Nome da lista necessário para a sua criação.');
             }
           }
         }
@@ -77,6 +81,7 @@ export class Tab2Page implements OnInit {
           handler: () => {
             this.listService.deleteList(list.id);
             this.loadLists();
+            this.filterLists();
           }
         }, {
           text: 'Rename',
@@ -122,6 +127,7 @@ export class Tab2Page implements OnInit {
             if (data.name) {
               this.listService.renameList(list.id, data.name);
               this.loadLists();
+              this.filterLists();
             } else {
               this.showToast('List name cannot be empty');
             }
@@ -146,6 +152,18 @@ export class Tab2Page implements OnInit {
 
     // Update the service
     this.listService.updateLists(this.lists);
+    this.filterLists();
+  }
+
+  filterLists() {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredLists = this.lists.filter(list =>
+      this.normalize(list.name).includes(this.normalize(query))
+    );
+  }
+
+  normalize(text: string): string {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
   async showToast(message: string) {

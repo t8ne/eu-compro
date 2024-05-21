@@ -17,8 +17,6 @@ export class PedidoPage {
 
   goBack() {
     if (this.listId) {
-      this.router.navigate([`/lista/${this.listId}`]);
-    } else {
       this.router.navigate(['/tabs/tab2']);
     }
   }

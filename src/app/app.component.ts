@@ -14,13 +14,12 @@ export class AppComponent {
   }
 
   initializeApp() {
-    // Hide the splash screen
-    SplashScreen.hide();
-
-    // Check if the platform is native (iOS or Android)
     if (Capacitor.isNativePlatform()) {
-      // Set the status bar style
-      StatusBar.setStyle({ style: Style.Light });
+      // Esconde a tela de splash após a inicialização
+      SplashScreen.hide();
+
+      // Configura a barra de status para um estilo escuro
+      StatusBar.setStyle({ style: Style.Dark });
     }
   }
 }

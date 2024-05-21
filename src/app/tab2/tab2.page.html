@@ -9,10 +9,21 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <div style="padding: 16px">
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      (ionInput)="filterLists()"
+      placeholder="Pesquisar listas"
+    ></ion-searchbar>
+    <p style="margin: 0; padding: 8px 0; color: gray; font-size: 14px">
+      Criadas recentemente
+    </p>
+  </div>
+
   <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
     <ion-list>
       <ion-item
-        *ngFor="let list of lists"
+        *ngFor="let list of filteredLists"
         (click)="openList(list.id)"
         (press)="openActionSheet(list)"
       >

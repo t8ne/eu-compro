@@ -1,13 +1,71 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>conta</ion-title>
+  <ion-toolbar style="--border-width: 0">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/settings"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">conta</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title style="text-align: center">Conta</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Primeiro Nome</ion-label>
+        <ion-input [(ngModel)]="firstName" required></ion-input>
+      </ion-item>
+      <div *ngIf="firstNameError" class="error-message">
+        Preencha este campo.
+      </div>
+      <ion-item>
+        <ion-label position="floating">Último Nome</ion-label>
+        <ion-input [(ngModel)]="lastName" required></ion-input>
+      </ion-item>
+      <div *ngIf="lastNameError" class="error-message">
+        Preencha este campo.
+      </div>
+      <ion-item>
+        <ion-label position="floating">Endereço Linha 1</ion-label>
+        <ion-input [(ngModel)]="addressLine1" required></ion-input>
+      </ion-item>
+      <div *ngIf="addressLine1Error" class="error-message">
+        Preencha este campo.
+      </div>
+      <ion-item>
+        <ion-label position="floating">Endereço Linha 2</ion-label>
+        <ion-input [(ngModel)]="addressLine2"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Cidade</ion-label>
+        <ion-input [(ngModel)]="city" required></ion-input>
+      </ion-item>
+      <div *ngIf="cityError" class="error-message">Preencha este campo.</div>
+      <ion-item>
+        <ion-label position="floating">Código Postal</ion-label>
+        <ion-input [(ngModel)]="postalCode" required></ion-input>
+      </ion-item>
+      <div *ngIf="postalCodeError" class="error-message">
+        Preencha este campo.
+      </div>
+      <ion-button style="margin-top: 20px" expand="block" (click)="submitInfo()"
+        >Submeter Informação</ion-button
+      >
+    </ion-card-content>
+  </ion-card>
+
+  <p style="margin-left: 10px; padding: 8px 0; color: gray; font-size: 14px">
+    Esta informação será salva para as suas próximas compras.
+  </p>
 </ion-content>
+
+<style>
+  .error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 8px;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+</style>
