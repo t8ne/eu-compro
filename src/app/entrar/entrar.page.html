@@ -1,4 +1,4 @@
-<ion-header [translucent]="true"> </ion-header>
+<ion-header [translucent]="true"></ion-header>
 
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
@@ -56,18 +56,38 @@
     text-align: center;
     color: #000;
   }
+
+  .error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
 </style>
 
 <ion-content>
   <div class="container">
     <p class="eucompro">EUCOMPRO</p>
     <ion-item>
-      <ion-input placeholder="Email" type="email"></ion-input>
+      <ion-input
+        placeholder="Email"
+        type="email"
+        [(ngModel)]="email"
+      ></ion-input>
     </ion-item>
+    <div *ngIf="emailError" class="error-message">Email não registado.</div>
     <ion-item>
-      <ion-input placeholder="Palavra-passe" type="password"></ion-input>
+      <ion-input
+        placeholder="Palavra-passe"
+        type="password"
+        [(ngModel)]="password"
+      ></ion-input>
     </ion-item>
-    <ion-button expand="block" routerLink="/tabs/tab1">Entrar</ion-button>
+    <div *ngIf="passwordError" class="error-message">
+      Palavra-passe incorreta.
+    </div>
+    <ion-button expand="block" (click)="login()">Entrar</ion-button>
     <p class="register-link" routerLink="/criarconta">Não tens conta?</p>
   </div>
 </ion-content>

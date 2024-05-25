@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CriarcontaPageRoutingModule } from './criarconta-routing.module';
 
-import { CriarcontaPage } from './criarconta.page';
+import { CriarContaPage } from './criarconta.page';
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { CriarcontaPage } from './criarconta.page';
     IonicModule,
     CriarcontaPageRoutingModule
   ],
-  declarations: [CriarcontaPage]
+  declarations: [CriarContaPage]
 })
 export class CriarcontaPageModule {}

@@ -6,6 +6,31 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <ion-item>
+      <ion-input placeholder="Nome" type="text" [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input
+        placeholder="Email"
+        type="email"
+        [(ngModel)]="email"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input
+        placeholder="Palavra-passe"
+        type="password"
+        [(ngModel)]="password"
+      ></ion-input>
+    </ion-item>
+    <ion-button expand="block" (click)="createAccount()"
+      >Criar Conta</ion-button
+    >
+  </div>
+</ion-content>
+
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
@@ -41,18 +66,3 @@
     --background-activated: #d84315;
   }
 </style>
-
-<ion-content>
-  <div class="container">
-    <ion-item>
-      <ion-input placeholder="Nome" type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input placeholder="Email" type="email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input placeholder="Palavra-passe" type="password"></ion-input>
-    </ion-item>
-    <ion-button expand="block" routerLink="/tabs/tab1">Criar Conta</ion-button>
-  </div>
-</ion-content>
