@@ -39,10 +39,6 @@ const routes: Routes = [
     loadChildren: () => import('./transacoes/transacoes.module').then(m => m.TransacoesPageModule)
   },
   {
-    path: 'locais',
-    loadChildren: () => import('./locais/locais.module').then(m => m.LocaisPageModule)
-  },
-  {
     path: 'notificacoes',
     loadChildren: () => import('./notificacoes/notificacoes.module').then(m => m.NotificacoesPageModule)
   },
