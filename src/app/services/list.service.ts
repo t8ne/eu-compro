@@ -1,58 +1,91 @@
 import { Injectable } from '@angular/core';
-
-interface Item {
-  name: string;
-  preco: number;
-  quantity: number;
-}
-
-interface List {
-  id: string;
-  name: string;
-  items: Item[];
-}
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListService {
-  private lists: List[] = [];
+  constructor(private firestore: AngularFirestore, private authService: AuthService) {}
 
-  constructor() {}
-
-  getLists(): List[] {
-    return this.lists;
+  async getLists(): Promise<any[]> {
+    const userId = await this.authService.getCurrentUserId();
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+    const listsSnapshot = await this.firestore.collection(`users/${userId}/lists`).get().toPromise();
+    const lists = listsSnapshot?.docs.map(doc => ({
+      id: doc.id,
+      ...(doc.data() as object)  // Cast data to object
+    })) || [];
+    return lists as any[];
   }
 
-  getListById(id: string): List | undefined {
-    return this.lists.find(list => list.id === id);
+  async getListById(listId: string): Promise<any> {
+    const userId = await this.authService.getCurrentUserId();
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+    const listDoc = await this.firestore.doc(`users/${userId}/lists/${listId}`).ref.get();
+    return listDoc.exists ? { id: listDoc.id, ...(listDoc.data() as object) } : null;  // Cast data to object
   }
 
-  createList(name: string): List {
-    const newList: List = { id: (this.lists.length + 1).toString(), name, items: [] };
-    this.lists.push(newList);
-    return newList;
+  async createList(name: string): Promise<void> {
+    const userId = await this.authService.getCurrentUserId();
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+    const id = this.firestore.createId();
+    await this.firestore.collection(`users/${userId}/lists`).doc(id).set({ id, name, items: [] });
   }
 
-  renameList(id: string, newName: string) {
-    const list = this.getListById(id);
-    if (list) {
-      list.name = newName;
+  async renameList(listId: string, newName: string): Promise<void> {
+    const userId = await this.authService.getCurrentUserId();
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+    await this.firestore.collection(`users/${userId}/lists`).doc(listId).update({ name: newName });
+  }
+
+  async addItemToList(listId: string, item: any): Promise<void> {
+    const userId = await this.authService.getCurrentUserId();
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+    const listRef = this.firestore.collection(`users/${userId}/lists`).doc(listId);
+    const listDoc = await listRef.get().toPromise();
+
+    if (listDoc && listDoc.exists) {
+      const listData = listDoc.data() as any;
+      if (listData.items) {
+        listData.items.push(item);
+        await listRef.update({ items: listData.items });
+      } else {
+        await listRef.update({ items: [item] });
+      }
+    } else {
+      await listRef.set({ items: [item] }, { merge: true });
     }
   }
 
-  addItemToList(listId: string, item: Item) {
-    const list = this.getListById(listId);
-    if (list) {
-      list.items.push(item);
+  async deleteList(listId: string): Promise<void> {
+    const userId = await this.authService.getCurrentUserId();
+    if (!userId) {
+      throw new Error('User not authenticated');
     }
+    await this.firestore.collection(`users/${userId}/lists`).doc(listId).delete();
   }
 
-  updateLists(lists: List[]) {
-    this.lists = lists;
-  }
-
-  deleteList(id: string) {
-    this.lists = this.lists.filter(list => list.id !== id);
+  async updateLists(lists: any[]): Promise<void> {
+    const userId = await this.authService.getCurrentUserId();
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+    const batch = this.firestore.firestore.batch();
+    lists.forEach(list => {
+      const listRef = this.firestore.collection(`users/${userId}/lists`).doc(list.id).ref;
+      batch.set(listRef, list);
+    });
+    await batch.commit();
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ModalController } from '@ionic/angular';
 import { ListService } from '../services/list.service';
@@ -8,7 +8,7 @@ import { ListService } from '../services/list.service';
   templateUrl: './tab3.page.html',
   styleUrls: ['./tab3.page.scss'],
 })
-export class Tab3Page {
+export class Tab3Page implements OnInit {
   searchTerm: string = '';
   recentSearches: string[] = [];
   searchResults: any[] = [];
@@ -24,6 +24,14 @@ export class Tab3Page {
     private listService: ListService,
     private modalCtrl: ModalController
   ) {}
+
+  ngOnInit() {
+    this.loadLists();
+  }
+
+  async loadLists() {
+    this.lists = await this.listService.getLists();
+  }
 
   filterItems(event: any) {
     const searchTerm = this.normalizeString(event.target.value.toLowerCase());
@@ -76,15 +84,15 @@ export class Tab3Page {
     });
   }
 
-  showProductDetails(product: any) {
+  async showProductDetails(product: any) {
     this.selectedProduct = product;
-    this.lists = this.listService.getLists();
+    this.lists = await this.listService.getLists();
     this.isModalOpen = true;
   }
 
-  addProductToList() {
+  async addProductToList() {
     if (this.selectedList && this.selectedProduct) {
-      this.listService.addItemToList(this.selectedList, {
+      await this.listService.addItemToList(this.selectedList, {
         name: this.selectedProduct.name,
         preco: this.selectedProduct.preco, // Adiciona o preço do produto
         quantity: 1, // Adiciona quantidade padrão

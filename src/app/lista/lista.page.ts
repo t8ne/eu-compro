@@ -14,16 +14,16 @@ export class ListaPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private listService: ListService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private router: Router
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     const listId = this.route.snapshot.paramMap.get('id');
     if (listId) {
       this.listId = listId;
-      this.currentList = this.listService.getListById(this.listId);
+      this.currentList = await this.listService.getListById(this.listId);
     }
   }
 
@@ -33,7 +33,11 @@ export class ListaPage implements OnInit {
 
   goToPagar() {
     this.router.navigate(['/pagar'], {
-      state: { subtotal: this.calculateSubtotal(this.currentList), listId: this.listId, name: this.currentList.name },
+      state: {
+        subtotal: this.calculateSubtotal(this.currentList),
+        listId: this.listId,
+        listName: this.currentList.name
+      }
     });
   }
 

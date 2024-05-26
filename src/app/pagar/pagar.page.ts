@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { StorageService } from '../services/storage.service';
 import { ToastController } from '@ionic/angular';
-import { UserDataService } from '../services/user-data.service';
 import { TransacaoService } from '../services/transacao.service';
 
 @Component({
@@ -22,42 +22,40 @@ export class PagarPage implements OnInit {
   cityError: boolean = false;
   postalCodeError: boolean = false;
   subtotal: number = 0;
-  listId: string = '';
-  listName: string = '';
+  listId: string | null = null;
+  listName: string | null = null; // Add this line
 
   constructor(
     private router: Router,
     private toastController: ToastController,
-    private userDataService: UserDataService,
+    private storageService: StorageService,
     private transacaoService: TransacaoService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as { subtotal: number, listId: string, name: string };
+    const state = navigation?.extras.state as { subtotal: number, listId: string, listName: string }; // Add listName here
     if (state) {
       this.subtotal = state.subtotal;
-      this.listId = state.listId || '';
-      this.listName = state.name || '';
+      this.listId = state.listId;
+      this.listName = state.listName; // Add this line
     }
 
-    const userData = this.userDataService.getUserData();
-    if (userData) {
-      this.firstName = userData.firstName || '';
-      this.lastName = userData.lastName || '';
-      this.addressLine1 = userData.addressLine1 || '';
-      this.addressLine2 = userData.addressLine2 || '';
-      this.city = userData.city || '';
-      this.postalCode = userData.postalCode || '';
-    }
+    this.firstName = await this.storageService.get('firstName') || '';
+    this.lastName = await this.storageService.get('lastName') || '';
+    this.addressLine1 = await this.storageService.get('addressLine1') || '';
+    this.addressLine2 = await this.storageService.get('addressLine2') || '';
+    this.city = await this.storageService.get('city') || '';
+    this.postalCode = await this.storageService.get('postalCode') || '';
   }
 
   onImageClick(event: any) {
     console.log('Image clicked', event.target.alt);
   }
 
-  submitProposal() {
+  async submitProposal() {
     this.resetErrors();
+
     if (!this.firstName) {
       this.firstNameError = true;
     }
@@ -75,7 +73,7 @@ export class PagarPage implements OnInit {
     }
 
     if (!this.firstNameError && !this.lastNameError && !this.addressLine1Error && !this.cityError && !this.postalCodeError) {
-      if (this.listId) {
+      if (this.listId && this.listName) { // Check for listName
         this.transacaoService.addTransacao({ listId: this.listId, subtotal: this.subtotal, name: this.listName });
       }
       this.router.navigate(['/pedido'], { state: { listId: this.listId } });

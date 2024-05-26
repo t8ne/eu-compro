@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserDataService } from '../services/user-data.service';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-conta',
@@ -19,9 +19,20 @@ export class ContaPage {
   cityError: boolean = false;
   postalCodeError: boolean = false;
 
-  constructor(private userDataService: UserDataService) {}
+  constructor(private storageService: StorageService) {
+    this.loadUserData();
+  }
 
-  submitInfo() {
+  async loadUserData() {
+    this.firstName = await this.storageService.get('firstName') || '';
+    this.lastName = await this.storageService.get('lastName') || '';
+    this.addressLine1 = await this.storageService.get('addressLine1') || '';
+    this.addressLine2 = await this.storageService.get('addressLine2') || '';
+    this.city = await this.storageService.get('city') || '';
+    this.postalCode = await this.storageService.get('postalCode') || '';
+  }
+
+  async submitInfo() {
     this.resetErrors();
 
     if (!this.firstName) {
@@ -49,7 +60,14 @@ export class ContaPage {
         city: this.city,
         postalCode: this.postalCode
       };
-      this.userDataService.setUserData(userData);
+
+      await this.storageService.set('firstName', this.firstName);
+      await this.storageService.set('lastName', this.lastName);
+      await this.storageService.set('addressLine1', this.addressLine1);
+      await this.storageService.set('addressLine2', this.addressLine2);
+      await this.storageService.set('city', this.city);
+      await this.storageService.set('postalCode', this.postalCode);
+
       this.showSuccessMessage();
     }
   }

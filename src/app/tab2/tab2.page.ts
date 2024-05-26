@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ListService } from '../services/list.service';
 import { AlertController, ActionSheetController, ToastController } from '@ionic/angular';
@@ -18,16 +18,23 @@ export class Tab2Page implements OnInit {
     private listService: ListService,
     private alertController: AlertController,
     private actionSheetController: ActionSheetController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.loadLists();
   }
 
-  loadLists() {
-    this.lists = this.listService.getLists();
-    this.filteredLists = this.lists;
+  async loadLists() {
+    try {
+      this.lists = await this.listService.getLists();
+      this.filteredLists = this.lists;
+      this.changeDetectorRef.detectChanges();
+    } catch (error) {
+      console.error('Failed to load lists:', error);
+      this.showToast('Failed to load lists');
+    }
   }
 
   openList(listId: string) {
@@ -54,11 +61,11 @@ export class Tab2Page implements OnInit {
           }
         }, {
           text: 'Ok',
-          handler: (data) => {
+          handler: async (data) => {
             if (data.name) {
-              this.listService.createList(data.name);
+              await this.listService.createList(data.name);
               this.loadLists();
-              this.filterLists();
+              alert.dismiss(); // Dismiss the alert after creating the list
             } else {
               this.showToast('Nome da lista necessário para a sua criação.');
             }
@@ -78,10 +85,9 @@ export class Tab2Page implements OnInit {
           text: 'Delete',
           role: 'destructive',
           icon: 'trash',
-          handler: () => {
-            this.listService.deleteList(list.id);
+          handler: async () => {
+            await this.listService.deleteList(list.id);
             this.loadLists();
-            this.filterLists();
           }
         }, {
           text: 'Rename',
@@ -123,11 +129,10 @@ export class Tab2Page implements OnInit {
           }
         }, {
           text: 'Ok',
-          handler: (data) => {
+          handler: async (data) => {
             if (data.name) {
-              this.listService.renameList(list.id, data.name);
+              await this.listService.renameList(list.id, data.name);
               this.loadLists();
-              this.filterLists();
             } else {
               this.showToast('List name cannot be empty');
             }

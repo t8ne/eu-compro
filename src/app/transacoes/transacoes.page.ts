@@ -15,7 +15,12 @@ export class TransacoesPage implements OnInit {
     this.loadTransacoes();
   }
 
-  loadTransacoes() {
-    this.transacoes = this.transacaoService.getTransacoes();
+  async loadTransacoes() {
+    try {
+      this.transacoes = await this.transacaoService.getTransacoes();
+    } catch (error) {
+      console.error('Error loading transactions', error);
+      this.transacoes = []; // Ensure transacoes is an array in case of an error
+    }
   }
 }
