@@ -27,14 +27,8 @@ export class Tab2Page implements OnInit {
   }
 
   async loadLists() {
-    try {
-      this.lists = await this.listService.getLists();
-      this.filteredLists = this.lists;
-      this.changeDetectorRef.detectChanges();
-    } catch (error) {
-      console.error('Failed to load lists:', error);
-      this.showToast('Failed to load lists');
-    }
+    this.lists = await this.listService.getLists();
+    this.filteredLists = this.lists;
   }
 
   openList(listId: string) {
@@ -65,7 +59,10 @@ export class Tab2Page implements OnInit {
             if (data.name) {
               await this.listService.createList(data.name);
               this.loadLists();
-              alert.dismiss(); // Dismiss the alert after creating the list
+              this.filterLists();
+
+              // Trigger change detection manually
+              this.changeDetectorRef.detectChanges();
             } else {
               this.showToast('Nome da lista necessário para a sua criação.');
             }
@@ -88,6 +85,7 @@ export class Tab2Page implements OnInit {
           handler: async () => {
             await this.listService.deleteList(list.id);
             this.loadLists();
+            this.filterLists();
           }
         }, {
           text: 'Rename',
@@ -133,6 +131,7 @@ export class Tab2Page implements OnInit {
             if (data.name) {
               await this.listService.renameList(list.id, data.name);
               this.loadLists();
+              this.filterLists();
             } else {
               this.showToast('List name cannot be empty');
             }

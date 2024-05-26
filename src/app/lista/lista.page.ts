@@ -9,7 +9,7 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./lista.page.scss'],
 })
 export class ListaPage implements OnInit {
-  currentList: any;
+  currentList: any = { items: [] }; // Ensure items is initialized as an empty array
   listId: string = '';
 
   constructor(
@@ -23,7 +23,7 @@ export class ListaPage implements OnInit {
     const listId = this.route.snapshot.paramMap.get('id');
     if (listId) {
       this.listId = listId;
-      this.currentList = await this.listService.getListById(this.listId);
+      this.currentList = await this.listService.getListById(this.listId) || { items: [] };
     }
   }
 

@@ -5,86 +5,96 @@
         <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>
-      <img
-        src="assets/fruits.jpg"
-        alt="Fruits"
-        style="width: 100%; height: auto"
-      />
-    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar> </ion-toolbar>
+    <ion-toolbar></ion-toolbar>
   </ion-header>
 
   <div class="content-container">
-    <h2>Recentes</h2>
+    <h2 class="recommendation-title">Páginas Recomendadas</h2>
     <div class="horizontal-scroll">
-      <div class="scroll-content">
-        <div class="scroll-item">
-          <img src="/assets/background/image.png" alt="Pingo Doce" />
-          <p>Pingo Doce</p>
-        </div>
-        <div class="scroll-item">
-          <img src="assets/lista2.jpg" alt="Lista 2" />
-          <p>Lista 2</p>
-        </div>
-        <div class="scroll-item">
-          <img src="assets/definicoes.jpg" alt="Definições" />
-          <p>Definições</p>
-        </div>
-        <div class="scroll-item">
-          <img src="assets/descontos.jpg" alt="Descontos" />
-          <p>Descontos</p>
-        </div>
-      </div>
+      <ion-button class="scroll-button" routerLink="/conta"
+        >Definições</ion-button
+      >
+      <ion-button class="scroll-button" routerLink="/tabs/tab3"
+        >Produtos</ion-button
+      >
+      <ion-button class="scroll-button" routerLink="/tabs/tab2"
+        >Listas</ion-button
+      >
+      <ion-button class="scroll-button" routerLink="/transacoes"
+        >Transações</ion-button
+      >
     </div>
 
     <ion-button expand="block" routerLink="/tabs/tab4" class="promo-button">
       Ver as Promoções mais recentes
     </ion-button>
 
-    <h2>
-      Mais lojas em Viana do Castelo
-      <ion-icon name="arrow-forward-outline"></ion-icon>
-    </h2>
+    <h2 class="store-list-title">Mais lojas em Viana do Castelo</h2>
     <ion-list>
-      <ion-item>
+      <ion-item button detail>
         <ion-icon
           name="storefront-outline"
           slot="start"
-          style="color: green"
+          style="
+            color: green;
+            -border-color: rgba(189, 189, 189, 0.338);
+            margin-top: 20px;
+          "
         ></ion-icon>
         <ion-label>Pingo Doce</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item button detail>
         <ion-icon
           name="storefront-outline"
           slot="start"
-          style="color: red"
+          style="
+            color: red;
+            -border-color: rgba(189, 189, 189, 0.338);
+            margin-top: 20px;
+          "
         ></ion-icon>
         <ion-label>Continente</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item button detail>
         <ion-icon
           name="storefront-outline"
           slot="start"
-          style="color: blue"
+          style="
+            color: blue;
+            -border-color: rgba(189, 189, 189, 0.338);
+            margin-top: 20px;
+          "
         ></ion-icon>
         <ion-label>LIDL</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item button detail>
         <ion-icon
           name="storefront-outline"
           slot="start"
-          style="color: green"
+          style="
+            color: green;
+            -border-color: rgba(189, 189, 189, 0.338);
+            margin-top: 20px;
+          "
         ></ion-icon>
         <ion-label>Auchan</ion-label>
       </ion-item>
     </ion-list>
+  </div>
+
+  <h2 class="store-list-title2">Verificar preços entre produtos</h2>
+
+  <ion-button expand="block" routerLink="/tabs/tab5" class="promo-button2">
+    Comparação de Preços
+  </ion-button>
+
+  <div class="footer">
+    <p>EuCompro</p>
   </div>
 </ion-content>
 
@@ -93,50 +103,76 @@
     padding: 16px;
   }
 
-  h2 {
+  .recommendation-title {
     font-size: 20px;
-    margin-bottom: 10px;
+    margin-top: -20px;
+    margin-bottom: 25px;
+    color: darkgray;
   }
 
   .horizontal-scroll {
     overflow-x: auto;
     display: flex;
     flex-wrap: nowrap;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
 
-  .scroll-content {
-    display: flex;
-  }
-
-  .scroll-item {
+  .scroll-button {
     flex: 0 0 auto;
-    text-align: center;
     margin-right: 10px;
-  }
-
-  .scroll-item img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 8px;
+    --border-radius: 8px;
+    --background: #f4f4f4;
+    --color: #333;
   }
 
   .promo-button {
     --background: linear-gradient(to right, #fbc02d, #ffeb3b);
     color: #000;
-    margin: 20px 0;
+    margin-top: 30px 0;
+    margin-bottom: 30px 0;
+  }
+
+  .promo-button2 {
+    --background: linear-gradient(to right, #fbc02d, #ffeb3b);
+    color: #000;
+    margin: 20px;
+  }
+
+  .store-list-title {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: darkgray;
+  }
+
+  .store-list-title2 {
+    font-size: 20px;
+    margin-top: -10px;
+    margin: 20px;
+    color: darkgray;
   }
 
   ion-list ion-item {
     --background: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   ion-list ion-item ion-icon {
     margin-right: 10px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-bottom: 20px;
+    color: lightgray;
+    font-weight: bold;
+    font-size: 17px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .footer p {
+    font-size: 14px;
   }
 </style>

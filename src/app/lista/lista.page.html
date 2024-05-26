@@ -5,7 +5,6 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="goToPagar()">
-        <!-- Update this line -->
         <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -15,19 +14,24 @@
 <ion-content [fullscreen]="true">
   <div class="list-info">
     <h2>{{ currentList?.name }}</h2>
-    <p>
+    <p *ngIf="currentList?.items">
       {{ currentList?.items.length }} produtos - {{
       calculateSubtotal(currentList) | currency: 'EUR' }}
     </p>
   </div>
-  <ion-list>
-    <ion-item *ngFor="let item of currentList?.items">
+  <ion-list *ngIf="currentList?.items">
+    <ion-item *ngFor="let item of currentList.items">
       <ion-label>{{ item.name }}</ion-label>
       <ion-note slot="end">{{ item.preco | currency: 'EUR' }}</ion-note>
       <ion-note slot="end">x{{ item.quantity }}</ion-note>
     </ion-item>
   </ion-list>
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+  <ion-fab
+    style="margin-bottom: 10px"
+    vertical="bottom"
+    horizontal="center"
+    slot="fixed"
+  >
     <ion-fab-button (click)="openCamera()">
       <ion-icon name="qr-code-outline"></ion-icon>
     </ion-fab-button>

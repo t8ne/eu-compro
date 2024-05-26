@@ -25,7 +25,7 @@
       <ion-item
         *ngFor="let list of filteredLists"
         (click)="openList(list.id)"
-        (press)="openActionSheet(list)"
+        (contextmenu)="openActionSheet(list); $event.preventDefault()"
       >
         <ion-label>
           <h2>{{ list.name }}</h2>
