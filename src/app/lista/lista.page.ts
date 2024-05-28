@@ -31,6 +31,10 @@ export class ListaPage implements OnInit {
     return list.items.reduce((total: number, item: any) => total + item.preco * item.quantity, 0);
   }
 
+  getTotalQuantity(list: any): number {
+    return list.items.reduce((total: number, item: any) => total + item.quantity, 0);
+  }
+
   goToPagar() {
     this.router.navigate(['/pagar'], {
       state: {

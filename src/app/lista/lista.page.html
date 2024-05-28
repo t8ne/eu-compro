@@ -15,7 +15,7 @@
   <div class="list-info">
     <h2>{{ currentList?.name }}</h2>
     <p *ngIf="currentList?.items">
-      {{ currentList?.items.length }} produtos - {{
+      {{ getTotalQuantity(currentList) }} produtos - {{
       calculateSubtotal(currentList) | currency: 'EUR' }}
     </p>
   </div>

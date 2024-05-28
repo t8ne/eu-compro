@@ -57,12 +57,15 @@ export class ListService {
 
     if (listDoc && listDoc.exists) {
       const listData = listDoc.data() as any;
-      if (listData.items) {
-        listData.items.push(item);
-        await listRef.update({ items: listData.items });
+      const existingItem = listData.items.find((listItem: any) => listItem.name === item.name);
+
+      if (existingItem) {
+        existingItem.quantity += item.quantity;
       } else {
-        await listRef.update({ items: [item] });
+        listData.items.push(item);
       }
+
+      await listRef.update({ items: listData.items });
     } else {
       await listRef.set({ items: [item] }, { merge: true });
     }
