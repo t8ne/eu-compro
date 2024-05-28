@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from './auth.service';
 
@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class ListService {
+  listUpdated: EventEmitter<void> = new EventEmitter<void>();
+
   constructor(private firestore: AngularFirestore, private authService: AuthService) {}
 
   async getLists(): Promise<any[]> {
@@ -13,12 +15,9 @@ export class ListService {
     if (!userId) {
       throw new Error('User not authenticated');
     }
-    const listsSnapshot = await this.firestore.collection(`users/${userId}/lists`).get().toPromise();
-    const lists = listsSnapshot?.docs.map(doc => ({
-      id: doc.id,
-      ...(doc.data() as object)  // Cast data to object
-    })) || [];
-    return lists as any[];
+    const listsSnapshot = await this.firestore.collection(`users/${userId}/lists`).ref.get();
+    const lists = listsSnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as object) }));
+    return lists;
   }
 
   async getListById(listId: string): Promise<any> {
@@ -27,7 +26,7 @@ export class ListService {
       throw new Error('User not authenticated');
     }
     const listDoc = await this.firestore.doc(`users/${userId}/lists/${listId}`).ref.get();
-    return listDoc.exists ? { id: listDoc.id, ...(listDoc.data() as object) } : null;  // Cast data to object
+    return listDoc.exists ? { id: listDoc.id, ...(listDoc.data() as object) } : null;
   }
 
   async createList(name: string): Promise<void> {
@@ -37,6 +36,7 @@ export class ListService {
     }
     const id = this.firestore.createId();
     await this.firestore.collection(`users/${userId}/lists`).doc(id).set({ id, name, items: [] });
+    this.listUpdated.emit(); // Emit event
   }
 
   async renameList(listId: string, newName: string): Promise<void> {
@@ -45,6 +45,7 @@ export class ListService {
       throw new Error('User not authenticated');
     }
     await this.firestore.collection(`users/${userId}/lists`).doc(listId).update({ name: newName });
+    this.listUpdated.emit(); // Emit event
   }
 
   async addItemToList(listId: string, item: any): Promise<void> {
@@ -57,17 +58,22 @@ export class ListService {
 
     if (listDoc && listDoc.exists) {
       const listData = listDoc.data() as any;
-      const existingItem = listData.items.find((listItem: any) => listItem.name === item.name);
-
-      if (existingItem) {
-        existingItem.quantity += item.quantity;
+      if (listData.items) {
+        // Check if item already exists
+        const existingItem = listData.items.find((i: any) => i.name === item.name);
+        if (existingItem) {
+          existingItem.quantity += item.quantity; // Add quantity
+        } else {
+          listData.items.push(item);
+        }
       } else {
-        listData.items.push(item);
+        listData.items = [item];
       }
-
       await listRef.update({ items: listData.items });
+      this.listUpdated.emit(); // Emit event
     } else {
       await listRef.set({ items: [item] }, { merge: true });
+      this.listUpdated.emit(); // Emit event
     }
   }
 
@@ -77,6 +83,7 @@ export class ListService {
       throw new Error('User not authenticated');
     }
     await this.firestore.collection(`users/${userId}/lists`).doc(listId).delete();
+    this.listUpdated.emit(); // Emit event
   }
 
   async updateLists(lists: any[]): Promise<void> {
@@ -90,14 +97,16 @@ export class ListService {
       batch.set(listRef, list);
     });
     await batch.commit();
+    this.listUpdated.emit(); // Emit event
   }
+
 
   async getNotificacoes(): Promise<any[]> {
     const userId = await this.authService.getCurrentUserId();
     if (!userId) {
       throw new Error('User not authenticated');
     }
-    const notificacoesSnapshot = await this.firestore.collection(`users/${userId}/notificacoes`).get().toPromise();
+    const notificacoesSnapshot = await this.firestore.collection(`users/${userId}/notificacoes`, ref => ref.orderBy('timestamp', 'desc')).get().toPromise();
     if (!notificacoesSnapshot) {
       return [];
     }

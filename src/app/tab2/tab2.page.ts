@@ -1,17 +1,19 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ListService } from '../services/list.service';
-import { AlertController, ActionSheetController, ToastController } from '@ionic/angular';
+import { AlertController, ActionSheetController, ToastController, Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
-export class Tab2Page implements OnInit {
+export class Tab2Page implements OnInit, OnDestroy {
   lists: any[] = [];
   filteredLists: any[] = [];
   searchQuery: string = '';
+  listUpdateSubscription: Subscription = new Subscription(); // Initialize with a default value
 
   constructor(
     private router: Router,
@@ -19,16 +21,29 @@ export class Tab2Page implements OnInit {
     private alertController: AlertController,
     private actionSheetController: ActionSheetController,
     private toastController: ToastController,
-    private changeDetectorRef: ChangeDetectorRef
+    private platform: Platform
   ) {}
 
-  ngOnInit() {
-    this.loadLists();
+  async ngOnInit() {
+    await this.platform.ready(); // Ensure the platform is ready before loading lists
+    await this.loadLists();
+    this.listUpdateSubscription = this.listService.listUpdated.subscribe(() => {
+      this.loadLists();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.listUpdateSubscription) {
+      this.listUpdateSubscription.unsubscribe();
+    }
   }
 
   async loadLists() {
     this.lists = await this.listService.getLists();
     this.filteredLists = this.lists;
+    this.filteredLists.forEach(list => {
+      list.totalQuantity = this.calculateTotalQuantity(list);
+    });
   }
 
   openList(listId: string) {
@@ -58,11 +73,8 @@ export class Tab2Page implements OnInit {
           handler: async (data) => {
             if (data.name) {
               await this.listService.createList(data.name);
-              this.loadLists();
+              await this.loadLists();
               this.filterLists();
-
-              // Trigger change detection manually
-              this.changeDetectorRef.detectChanges();
             } else {
               this.showToast('Nome da lista necessário para a sua criação.');
             }
@@ -84,7 +96,7 @@ export class Tab2Page implements OnInit {
           icon: 'trash',
           handler: async () => {
             await this.listService.deleteList(list.id);
-            this.loadLists();
+            await this.loadLists();
             this.filterLists();
           }
         }, {
@@ -130,7 +142,7 @@ export class Tab2Page implements OnInit {
           handler: async (data) => {
             if (data.name) {
               await this.listService.renameList(list.id, data.name);
-              this.loadLists();
+              await this.loadLists();
               this.filterLists();
             } else {
               this.showToast('List name cannot be empty');
@@ -164,6 +176,10 @@ export class Tab2Page implements OnInit {
     this.filteredLists = this.lists.filter(list =>
       this.normalize(list.name).includes(this.normalize(query))
     );
+  }
+
+  calculateTotalQuantity(list: any): number {
+    return list.items.reduce((total: number, item: any) => total + item.quantity, 0);
   }
 
   normalize(text: string): string {
