@@ -110,4 +110,16 @@ export class Tab3Page implements OnInit {
     this.showGrid = false;
     this.selectedProduct = null;
   }
+
+  incrementQuantity() {
+    if (this.selectedProduct) {
+      this.selectedProduct.quantity++;
+    }
+  }
+  
+  decrementQuantity() {
+    if (this.selectedProduct && this.selectedProduct.quantity > 1) {
+      this.selectedProduct.quantity--;
+    }
+  }
 }
