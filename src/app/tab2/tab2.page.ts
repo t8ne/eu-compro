@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { ListService } from '../services/list.service';
-import { AlertController, ActionSheetController, ToastController, Platform } from '@ionic/angular';
+import { AlertController, ActionSheetController, ToastController, Platform, IonItemSliding } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -9,11 +9,13 @@ import { Subscription } from 'rxjs';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
-export class Tab2Page implements OnInit, OnDestroy {
+export class Tab2Page implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChildren('slidingItem') slidingItems!: QueryList<IonItemSliding>;
+
   lists: any[] = [];
   filteredLists: any[] = [];
   searchQuery: string = '';
-  listUpdateSubscription: Subscription = new Subscription(); // Initialize with a default value
+  listUpdateSubscription: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -25,8 +27,8 @@ export class Tab2Page implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    await this.platform.ready(); // Ensure the platform is ready before loading lists
-    await this.loadLists();
+    await this.platform.ready();
+    this.loadLists();
     this.listUpdateSubscription = this.listService.listUpdated.subscribe(() => {
       this.loadLists();
     });
@@ -38,12 +40,28 @@ export class Tab2Page implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const slidingItem = this.slidingItems.first;
+      if (slidingItem) {
+        slidingItem.open('start');
+        setTimeout(() => {
+          slidingItem.close();
+        }, 500); // Close after half a second
+      }
+    }, 500); // Open after half a second
+  }
+
   async loadLists() {
-    this.lists = await this.listService.getLists();
-    this.filteredLists = this.lists;
-    this.filteredLists.forEach(list => {
-      list.totalQuantity = this.calculateTotalQuantity(list);
-    });
+    try {
+      this.lists = await this.listService.getLists();
+      this.filteredLists = this.lists.map(list => ({
+        ...list,
+        totalQuantity: this.calculateTotalQuantity(list)
+      }));
+    } catch (error) {
+      console.error('Error loading lists:', error);
+    }
   }
 
   openList(listId: string) {
@@ -73,11 +91,35 @@ export class Tab2Page implements OnInit, OnDestroy {
           handler: async (data) => {
             if (data.name) {
               await this.listService.createList(data.name);
-              await this.loadLists();
-              this.filterLists();
+              this.loadLists();
             } else {
               this.showToast('Nome da lista necessário para a sua criação.');
             }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async confirmDeleteList(list: any) {
+    const alert = await this.alertController.create({
+      header: 'Confirmação',
+      message: 'Tem a certeza que quer eliminar esta lista?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Eliminar',
+          handler: async () => {
+            await this.listService.deleteList(list.id);
+            this.loadLists();
           }
         }
       ]
@@ -91,22 +133,22 @@ export class Tab2Page implements OnInit, OnDestroy {
       header: 'Actions',
       buttons: [
         {
-          text: 'Delete',
-          role: 'destructive',
-          icon: 'trash',
-          handler: async () => {
-            await this.listService.deleteList(list.id);
-            await this.loadLists();
-            this.filterLists();
-          }
-        }, {
-          text: 'Rename',
+          text: 'Renomear',
           icon: 'create',
           handler: () => {
             this.presentRenamePrompt(list);
           }
-        }, {
-          text: 'Cancel',
+        },
+        {
+          text: 'Eliminar',
+          icon: 'trash',
+          role: 'destructive',
+          handler: async () => {
+            await this.confirmDeleteList(list);
+          }
+        },
+        {
+          text: 'Cancelar',
           icon: 'close',
           role: 'cancel',
           handler: () => {
@@ -120,18 +162,18 @@ export class Tab2Page implements OnInit, OnDestroy {
 
   async presentRenamePrompt(list: any) {
     const alert = await this.alertController.create({
-      header: 'Rename List',
+      header: 'Renomear Lista',
       inputs: [
         {
           name: 'name',
           type: 'text',
           value: list.name,
-          placeholder: 'List Name'
+          placeholder: 'Nome da Lista'
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
@@ -142,10 +184,9 @@ export class Tab2Page implements OnInit, OnDestroy {
           handler: async (data) => {
             if (data.name) {
               await this.listService.renameList(list.id, data.name);
-              await this.loadLists();
-              this.filterLists();
+              this.loadLists();
             } else {
-              this.showToast('List name cannot be empty');
+              this.showToast('Nome da lista não pode estar vazio.');
             }
           }
         }
@@ -159,14 +200,11 @@ export class Tab2Page implements OnInit, OnDestroy {
     const fromIndex = event.detail.from;
     const toIndex = event.detail.to;
 
-    // Move the item in the array
     const itemToMove = this.lists.splice(fromIndex, 1)[0];
     this.lists.splice(toIndex, 0, itemToMove);
 
-    // Complete the reorder event
     event.detail.complete();
 
-    // Update the service
     this.listService.updateLists(this.lists);
     this.filterLists();
   }

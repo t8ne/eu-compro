@@ -20,11 +20,23 @@
     </p>
   </div>
   <ion-list *ngIf="currentList?.items">
-    <ion-item *ngFor="let item of currentList.items">
-      <ion-label>{{ item.name }}</ion-label>
-      <ion-note slot="end">{{ item.preco | currency: 'EUR' }}</ion-note>
-      <ion-note slot="end">x{{ item.quantity }}</ion-note>
-    </ion-item>
+    <ion-item-sliding *ngFor="let item of currentList.items" #slidingItem>
+      <ion-item-options side="start">
+        <ion-item-option (click)="updateItemQuantity(item)">
+          <ion-icon slot="top" name="pencil"></ion-icon>
+          Quantidade
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteItem(item)">
+          <ion-icon slot="top" name="trash"></ion-icon>
+          Eliminar
+        </ion-item-option>
+      </ion-item-options>
+      <ion-item>
+        <ion-label>{{ item.name }}</ion-label>
+        <ion-note slot="end">{{ item.preco | currency: 'EUR' }}</ion-note>
+        <ion-note slot="end">x{{ item.quantity }}</ion-note>
+      </ion-item>
+    </ion-item-sliding>
   </ion-list>
   <ion-fab
     style="margin-bottom: 10px"

@@ -22,17 +22,31 @@
 
   <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
     <ion-list>
-      <ion-item
-        *ngFor="let list of filteredLists"
-        (click)="openList(list.id)"
-        (contextmenu)="openActionSheet(list); $event.preventDefault()"
+      <ion-item-sliding
+        *ngFor="let list of filteredLists; let i = index"
+        #slidingItem
       >
-        <ion-label>
-          <h2>{{ list.name }}</h2>
-          <p>{{ list.totalQuantity }} produtos</p>
-        </ion-label>
-        <ion-reorder slot="end"></ion-reorder>
-      </ion-item>
+        <ion-item-options side="start">
+          <ion-item-option color="primary" (click)="presentRenamePrompt(list)">
+            <ion-icon slot="top" name="pencil"></ion-icon>
+            Renomear
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="confirmDeleteList(list)">
+            <ion-icon slot="top" name="trash"></ion-icon>
+            Eliminar
+          </ion-item-option>
+        </ion-item-options>
+        <ion-item
+          (click)="openList(list.id)"
+          (contextmenu)="openActionSheet(list); $event.preventDefault()"
+        >
+          <ion-label>
+            <h2>{{ list.name }}</h2>
+            <p>{{ list.totalQuantity }} produtos</p>
+          </ion-label>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      </ion-item-sliding>
     </ion-list>
   </ion-reorder-group>
 

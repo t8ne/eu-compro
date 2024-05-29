@@ -196,13 +196,25 @@
     align-items: center;
   }
 
+  .quantity-controls ion-button {
+    margin: 0;
+  }
+
   ion-input {
-    margin: 0 10px;
+    margin: 0 5px;
     text-align: center;
+    max-width: 50px; /* Ensures the input doesn't get too wide */
   }
 
   ion-select.modal-value {
-    width: 10%;
+    width: auto;
     flex-grow: 1;
+    --padding-start: 0;
+    text-align: left;
+  }
+
+  ion-select::part(text) {
+    text-align: left;
+    padding-right: -90px; /* Ensures the text does not overlap with the arrows */
   }
 </style>

@@ -77,6 +77,16 @@ export class ListService {
     }
   }
 
+  async updateListItems(listId: string, items: any[]): Promise<void> {
+    const userId = await this.authService.getCurrentUserId();
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+    const listRef = this.firestore.collection(`users/${userId}/lists`).doc(listId);
+    await listRef.update({ items });
+    this.listUpdated.emit(); // Emit event
+  }
+
   async deleteList(listId: string): Promise<void> {
     const userId = await this.authService.getCurrentUserId();
     if (!userId) {
@@ -99,7 +109,6 @@ export class ListService {
     await batch.commit();
     this.listUpdated.emit(); // Emit event
   }
-
 
   async getNotificacoes(): Promise<any[]> {
     const userId = await this.authService.getCurrentUserId();

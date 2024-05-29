@@ -15,6 +15,14 @@ const config: CapacitorConfig = {
     ScreenOrientation: {
       orientation: 'portrait'
     },
+    BarcodeScanner: {
+      android: {
+        enableBarcodeScanner: true,
+      },
+      ios: {
+        enableBarcodeScanner: true,
+      }
+    }
   },
 };
 

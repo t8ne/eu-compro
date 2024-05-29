@@ -28,6 +28,12 @@ export class EntrarPage {
       return;
     }
 
+    if (!this.validateEmail(this.email)) {
+      this.emailError = 'Formato de Email não reconhecido.';
+      this.password = '';
+      return;
+    }
+
     if (!this.password) {
       this.passwordError = 'Palavra-passe não introduzida.';
       return;
@@ -61,6 +67,11 @@ export class EntrarPage {
         this.showToast('Erro ao fazer login. Por favor, tente novamente.');
       }
     }
+  }
+
+  validateEmail(email: string): boolean {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
   }
 
   resetErrors() {
