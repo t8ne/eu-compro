@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar style="--border-width: 0">
+    <ion-title>
+      Ofertas de produtos
+    </ion-title>
     <ion-buttons slot="start">
       <ion-button routerLink="/settings">
         <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
@@ -100,7 +103,7 @@
           "
         >
           {{ selectedProduct?.name }}
-          <span style="color: red">({{ selectedProduct?.preco }}€)</span>
+          <span style="color: blue">({{ selectedProduct?.preco }}€)</span>
         </h4>
         <hr />
         <div class="info-row">
@@ -268,4 +271,5 @@
     text-align: left;
     padding-right: -90px; /* Ensures the text does not overlap with the arrows */
   }
+
 </style>
