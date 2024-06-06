@@ -119,11 +119,33 @@ export class ListaPage implements OnInit, AfterViewInit {
   }
 
   async deleteItem(item: any) {
-    this.currentList.items = this.currentList.items.filter((i: any) => i !== item);
-    await this.listService.updateListItems(this.listId, this.currentList.items);
-    this.changeDetectorRef.detectChanges(); // Trigger change detection
-    this.showToast('Produto removido da Lista.');
-  }
+    const alert = await this.alertController.create({
+        header: 'Confirmar',
+        message: 'Tem certeza de que deseja remover este item?',
+        buttons: [
+            {
+                text: 'Cancelar',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: () => {
+                    console.log('Confirm Cancel');
+                }
+            }, 
+            {
+                text: 'Ok',
+                handler: async () => {
+                    this.currentList.items = this.currentList.items.filter((i: any) => i !== item);
+                    await this.listService.updateListItems(this.listId, this.currentList.items);
+                    this.changeDetectorRef.detectChanges(); // Trigger change detection
+                    this.showToast('Produto removido da Lista.');
+                }
+            }
+        ]
+    });
+
+    await alert.present();
+}
+
 
   async showToast(message: string) {
     const toast = await this.toastController.create({
