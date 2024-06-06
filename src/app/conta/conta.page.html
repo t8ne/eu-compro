@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar style="--border-width: 0">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/settings"></ion-back-button>
+      <ion-back-button defaultHref="/settings" text="Atrás"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -41,7 +41,9 @@
         <ion-label position="floating">Cidade</ion-label>
         <ion-input [(ngModel)]="city" required></ion-input>
       </ion-item>
-      <div *ngIf="cityError" class="error-message">É necessário escrever o nome de uma cidade neste campo.</div>
+      <div *ngIf="cityError" class="error-message">
+        É necessário escrever o nome de uma cidade neste campo.
+      </div>
       <ion-item>
         <ion-label position="floating">Código-Postal</ion-label>
         <ion-input [(ngModel)]="postalCode" required></ion-input>
@@ -55,7 +57,10 @@
     </ion-card-content>
   </ion-card>
 
-  <p class = "paragrafo" style="margin-left: 10px; padding: 8px 0; color: gray; font-size: 14px">
+  <p
+    class="paragrafo"
+    style="margin-left: 10px; padding: 8px 0; color: gray; font-size: 14px"
+  >
     Esta informação será guardada para as suas próximas compras.
   </p>
 </ion-content>

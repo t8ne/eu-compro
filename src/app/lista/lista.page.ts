@@ -80,6 +80,7 @@ export class ListaPage implements OnInit, AfterViewInit {
               item.quantity = parseInt(data.quantity, 10);
               await this.listService.updateListItems(this.listId, this.currentList.items);
               this.changeDetectorRef.detectChanges(); // Trigger change detection
+              this.showToast('Quantidade alterada.');
             } else {
               this.showToast('Quantidade inválida.');
             }
@@ -121,6 +122,7 @@ export class ListaPage implements OnInit, AfterViewInit {
     this.currentList.items = this.currentList.items.filter((i: any) => i !== item);
     await this.listService.updateListItems(this.listId, this.currentList.items);
     this.changeDetectorRef.detectChanges(); // Trigger change detection
+    this.showToast('Produto removido da Lista.');
   }
 
   async showToast(message: string) {

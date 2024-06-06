@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar style="--border-width: 0">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/entrar"></ion-back-button>
+      <ion-back-button defaultHref="/entrar" text="Atrás"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -59,9 +59,6 @@
 
 <ion-content>
   <div class="container">
-    <ion-item>
-      <ion-input placeholder="Nome" type="text" [(ngModel)]="name"></ion-input>
-    </ion-item>
     <ion-item>
       <ion-input
         placeholder="Email"

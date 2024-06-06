@@ -37,6 +37,7 @@ export class ListService {
     const id = this.firestore.createId();
     await this.firestore.collection(`users/${userId}/lists`).doc(id).set({ id, name, items: [] });
     this.listUpdated.emit(); // Emit event
+    
   }
 
   async renameList(listId: string, newName: string): Promise<void> {
@@ -133,4 +134,5 @@ export class ListService {
     const timestamp = new Date();
     await this.firestore.collection(`users/${userId}/notificacoes`).add({ message, timestamp });
   }
+
 }

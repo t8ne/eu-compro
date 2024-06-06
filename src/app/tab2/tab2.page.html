@@ -1,6 +1,15 @@
 <ion-header [translucent]="true">
+  <ion-title style="font-weight: bold; text-align: center; margin-top: 2%">
+    Listas
+  </ion-title>
   <ion-toolbar style="--border-width: 0">
     <ion-buttons slot="end">
+      <ion-button routerLink="/notificacoes">
+        <ion-icon
+          class="notificacoes"
+          name="notifications-circle-outline"
+        ></ion-icon>
+      </ion-button>
       <ion-button routerLink="/settings">
         <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
       </ion-button>
