@@ -11,7 +11,7 @@ Certifique-se de ter o Node.js e o npm instalados. Pode baixá-los e instalá-lo
 1. **Fazer Clone ao Repositório**
 
 ```bash
-git clone https://github.com/t8ne/EuCompro
+git clone https://github.com/t8ne/eu-compro
 ```
 
 2. **Instalar Ionic CLI**
